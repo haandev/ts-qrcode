@@ -13,7 +13,7 @@
  *
  * Still public domain :)
  */
-export type QrCodeOptions = { ecclevel?: string; version?: number; mode?: string; mask?: number };
+export type QrCodeOptions = { ecclevel?: "L" | "M" | "Q" | "H"; version?: number; mode?: "numeric" | "alphanumeric" | "octet"; mask?: number };
 
 export class QrCode {
   /* Quick overview: QR code composed of 2D array of modules (a rectangular
@@ -474,7 +474,7 @@ export class QrCode {
 
       // evaluate the current row
       groups = [0]; // the first empty group of white
-      for (let j = 0; j < n; ) {
+      for (let j = 0; j < n;) {
         let k;
         for (let k = 0; j < n && row[j]; ++k) ++j;
         groups.push(k);
@@ -485,7 +485,7 @@ export class QrCode {
 
       // evaluate the current column
       groups = [0];
-      for (let j = 0; j < n; ) {
+      for (let j = 0; j < n;) {
         let k;
         for (k = 0; j < n && this.matrix[j][i]; ++k) ++j;
         groups.push(k);
@@ -692,7 +692,7 @@ export class QrCode {
     const modulus = poly.slice();
 
     modulus.push(new Array(genpoly.length).fill(0));
-    for (let i = 0; i < poly.length; ) {
+    for (let i = 0; i < poly.length;) {
       const quotient = QrCode.GF256.INVMAP[modulus[i++]];
       if (quotient >= 0) {
         for (let j = 0; j < genpoly.length; ++j) {
